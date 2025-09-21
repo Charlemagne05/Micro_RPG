@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pv = rand(50, 100);
         $atk = rand(1, 10);
         $xp = 0;
-        $charModel->addCustom($pseudo, $class_id, $pv, $atk, $xp); // méthode spéciale pour stats aléatoires
+        $charModel->addCustom($pseudo, $class_id, $pv, $atk, $xp);
     }
     if ($action === 'edit_character') {
         $charModel->update(
@@ -50,7 +50,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-// --- Filtrage des personnages ---
 $filter = [];
 if (!empty($_GET['pseudo'])) $filter['pseudo'] = $_GET['pseudo'];
 if (!empty($_GET['class_id'])) $filter['class_id'] = $_GET['class_id'];
@@ -66,25 +65,11 @@ $characters = $charModel->getAll($filter);
 <title>Gestion RPG - Home</title>
 <link rel="stylesheet" href="../../assets/css/style.css">
 <style>
-body { font-family: Arial; padding: 20px; background: #f4f4f9; }
-h1,h2 { text-align: center; color: #2c3e50; }
-.classes,.characters { display:flex; flex-wrap: wrap; gap:20px; justify-content:center; margin-bottom:40px; }
-.card { background:#fff; border-radius:10px; padding:15px; width:250px; box-shadow:0 4px 6px rgba(0,0,0,0.1); position:relative; }
-.card strong { display:block; font-size:1.1em; margin-bottom:5px; color:#34495e; }
-form { margin-top:10px; }
-label { display:block; margin:5px 0; font-weight:500; }
-input[type="text"], input[type="number"], select, textarea { width:100%; padding:6px; border-radius:5px; border:1px solid #ccc; box-sizing:border-box; }
-button { background:#3498db; color:white; border:none; padding:6px 10px; border-radius:5px; cursor:pointer; margin-top:8px; width:100%; font-weight:bold; transition:background 0.2s; }
-button:hover { background:#2980b9; }
-.close-button { position:absolute; top:5px; right:5px; background:#e74c3c; color:white; border:none; border-radius:50%; width:22px; height:22px; cursor:pointer; font-weight:bold; line-height:20px; padding:0; }
-.close-button:hover { background:#c0392b; }
-@media(max-width:600px){.card{width:90%;}}
 </style>
 </head>
 <body>
 <h1>Gestion RPG</h1>
 
-<!-- --- FORMULAIRE FILTRAGE --- -->
 <form method="get" style="text-align:center; margin-bottom:20px;">
 <input type="text" name="pseudo" placeholder="Rechercher par pseudo" value="<?= htmlspecialchars($_GET['pseudo'] ?? '') ?>">
 <select name="class_id">
@@ -103,7 +88,7 @@ button:hover { background:#2980b9; }
 <strong><?= htmlspecialchars($c['name']) ?></strong>
 <p><?= htmlspecialchars($c['description']) ?></p>
 
-<!-- Modifier Classe -->
+
 <form method="post">
 <input type="hidden" name="action" value="edit_class">
 <input type="hidden" name="class_id" value="<?= $c['id'] ?>">
@@ -112,7 +97,7 @@ button:hover { background:#2980b9; }
 <button type="submit">Modifier</button>
 </form>
 
-<!-- Supprimer Classe -->
+
 <form method="post" onsubmit="return confirm('Supprimer cette classe et tous ses personnages ?')">
 <input type="hidden" name="action" value="delete_class">
 <input type="hidden" name="class_id" value="<?= $c['id'] ?>">
@@ -121,7 +106,7 @@ button:hover { background:#2980b9; }
 </div>
 <?php endforeach; ?>
 
-<!-- Ajouter Classe -->
+
 <div class="card">
 <form method="post">
 <input type="hidden" name="action" value="add_class">
@@ -142,7 +127,7 @@ button:hover { background:#2980b9; }
 <p>XP: <?= $ch['xp'] ?></p>
 <p>Status: <?= $ch['connected'] ? 'En ligne' : 'Hors ligne' ?></p>
 
-<!-- Modifier Personnage -->
+
 <form method="post">
 <input type="hidden" name="action" value="edit_character">
 <input type="hidden" name="char_id" value="<?= $ch['id'] ?>">
@@ -161,7 +146,7 @@ button:hover { background:#2980b9; }
 <button type="submit">Modifier</button>
 </form>
 
-<!-- Supprimer Personnage -->
+
 <form method="post" onsubmit="return confirm('Supprimer ce personnage ?')">
 <input type="hidden" name="action" value="delete_character">
 <input type="hidden" name="char_id" value="<?= $ch['id'] ?>">
@@ -170,7 +155,6 @@ button:hover { background:#2980b9; }
 </div>
 <?php endforeach; ?>
 
-<!-- Ajouter Personnage -->
 <div class="card">
 <form method="post">
 <input type="hidden" name="action" value="add_character">

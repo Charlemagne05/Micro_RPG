@@ -1,6 +1,6 @@
 <?php
 $host = '127.0.0.1';
-$port = 8889; // port MySQL de MAMP
+$port = 8889; 
 $db   = 'micro_rpg';
 $user = 'root';
 $pass = 'root';
